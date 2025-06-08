@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { EyeIcon, PlayIcon } from '@heroicons/react/24/solid';
 
@@ -39,11 +39,11 @@ const LiveStreamers = () => {
     }
   ];
 
-  const fetchStreamers = async () => {
+  const fetchStreamers = useCallback(async () => {
     try {
       setError(null);
 
-      const response = await fetch('http://localhost:8000/streamers');
+      const response = await fetch('https://web1-strip.onrender.com/streamers');
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -64,7 +64,7 @@ const LiveStreamers = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [fallbackStreamers]);
 
   useEffect(() => {
     fetchStreamers();
@@ -75,7 +75,7 @@ const LiveStreamers = () => {
     }, 5 * 60 * 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchStreamers]);
 
   const handleStreamerClick = (streamerName) => {
     const url = `https://stripchat.com/${streamerName}`;
