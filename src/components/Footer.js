@@ -66,34 +66,43 @@ const Footer = () => {
               <h4 className="text-xl font-bold text-white mb-6">Quick Links</h4>
               <div className="space-y-4">
                 {/* X (Community) */}
-                <a 
-                  href="#" 
-                  className="flex items-center text-gray-400 hover:text-strip-pink transition-colors duration-300 group"
+                <button 
+                  className="flex items-center text-gray-400 hover:text-strip-pink transition-colors duration-300 group w-full text-left"
+                  onClick={() => {
+                    // Add your navigation logic here when ready
+                    console.log('Navigate to community');
+                  }}
                 >
                   <span className="mr-2">𝕏</span>
                   <span>Community</span>
                   <ArrowTopRightOnSquareIcon className="w-4 h-4 ml-2 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </a>
+                </button>
 
                 {/* Buy $STRIP */}
-                <a 
-                  href="#" 
-                  className="flex items-center text-gray-400 hover:text-strip-purple transition-colors duration-300 group"
+                <button 
+                  className="flex items-center text-gray-400 hover:text-strip-purple transition-colors duration-300 group w-full text-left"
+                  onClick={() => {
+                    // Add your navigation logic here when ready
+                    console.log('Navigate to buy');
+                  }}
                 >
                   <span className="mr-2">💰</span>
                   <span>Buy $STRIP</span>
                   <ArrowTopRightOnSquareIcon className="w-4 h-4 ml-2 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </a>
+                </button>
 
                 {/* Telegram */}
-                <a 
-                  href="#" 
-                  className="flex items-center text-gray-400 hover:text-strip-pink transition-colors duration-300 group"
+                <button 
+                  className="flex items-center text-gray-400 hover:text-strip-pink transition-colors duration-300 group w-full text-left"
+                  onClick={() => {
+                    // Add your navigation logic here when ready
+                    console.log('Navigate to telegram');
+                  }}
                 >
                   <span className="mr-2">📱</span>
                   <span>Telegram (just kidding)</span>
                   <ArrowTopRightOnSquareIcon className="w-4 h-4 ml-2 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </a>
+                </button>
               </div>
             </motion.div>
           </div>
