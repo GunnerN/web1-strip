@@ -17,7 +17,7 @@ app = FastAPI(title="Strip Token Live Streamers API", version="1.0.0")
 # Add CORS middleware to allow requests from React frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "startling-bombolone-650a48.netlify.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
