@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { EyeIcon, PlayIcon } from '@heroicons/react/24/solid';
 
@@ -7,8 +7,8 @@ const LiveStreamers = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fallback mock data in case API is not available
-  const fallbackStreamers = [
+  // Wrap fallback data in useMemo to prevent recreation on every render
+  const fallbackStreamers = useMemo(() => [
     {
       id: 1,
       name: "Bustygoddess32",
@@ -37,7 +37,7 @@ const LiveStreamers = () => {
       profileImage: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face",
       isLive: true
     }
-  ];
+  ], []);
 
   const fetchStreamers = useCallback(async () => {
     try {
