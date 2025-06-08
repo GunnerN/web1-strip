@@ -277,27 +277,58 @@ class ScrapingService:
                     await browser.close()
                 except:
                     pass
+            logger.warning("Scraping failed completely - returning fallback data")
             return self.fallback_streamers
     
     async def get_streamers(self) -> List[Dict]:
         """Get streamers with caching"""
         current_time = time.time()
         
-        # Return cached data if still valid
+        # Return cached data if still valid (whether real scraped data or fallback)
         if (current_time - self.last_scrape_time < self.cache_duration and 
             self.cached_streamers):
-            logger.info("Returning cached streamers")
+            logger.info(f"Returning cached streamers ({len(self.cached_streamers)} items, cached {int(current_time - self.last_scrape_time)}s ago)")
             return self.cached_streamers
         
-        # Scrape new data
-        logger.info("Scraping fresh streamer data")
+        # Cache expired or no cached data - attempt fresh scraping
+        logger.info("Cache expired or empty - attempting fresh scrape")
         streamers = await self.scrape_streamers()
         
+        # Update cache with scraped data (could be real data or fallback from scrape_streamers)
         if streamers:
             self.cached_streamers = streamers
             self.last_scrape_time = current_time
+            
+            # Log what type of data we're caching
+            if streamers == self.fallback_streamers:
+                logger.info(f"Cached fallback data ({len(streamers)} items) - scraping failed")
+            else:
+                logger.info(f"Cached fresh scraped data ({len(streamers)} items)")
+        else:
+            # This shouldn't happen since scrape_streamers always returns something
+            logger.error("scrape_streamers returned empty data - using fallback")
+            self.cached_streamers = self.fallback_streamers
+            self.last_scrape_time = current_time
         
-        return streamers if streamers else self.fallback_streamers
+        return self.cached_streamers
+
+    def get_cache_status(self) -> Dict:
+        """Get current cache status information"""
+        current_time = time.time()
+        cache_age = current_time - self.last_scrape_time if self.last_scrape_time > 0 else None
+        is_cache_valid = (cache_age is not None and 
+                         cache_age < self.cache_duration and 
+                         bool(self.cached_streamers))
+        
+        return {
+            "has_cached_data": bool(self.cached_streamers),
+            "cached_items_count": len(self.cached_streamers),
+            "cache_age_seconds": int(cache_age) if cache_age else None,
+            "cache_duration_seconds": self.cache_duration,
+            "is_cache_valid": is_cache_valid,
+            "is_using_fallback": self.cached_streamers == self.fallback_streamers if self.cached_streamers else None,
+            "last_scrape_timestamp": self.last_scrape_time if self.last_scrape_time > 0 else None
+        }
 
 # Initialize scraping service
 scraping_service = ScrapingService()
@@ -321,12 +352,53 @@ async def get_live_streamers():
 async def refresh_streamers():
     """Force refresh streamer data"""
     try:
+        old_cache_status = scraping_service.get_cache_status()
         scraping_service.last_scrape_time = 0  # Force refresh
         streamers = await scraping_service.get_streamers()
-        return {"message": f"Refreshed {len(streamers)} streamers", "count": len(streamers)}
+        new_cache_status = scraping_service.get_cache_status()
+        
+        return {
+            "message": f"Refreshed {len(streamers)} streamers", 
+            "count": len(streamers),
+            "was_using_fallback": old_cache_status.get("is_using_fallback"),
+            "now_using_fallback": new_cache_status.get("is_using_fallback"),
+            "cache_status": new_cache_status
+        }
     except Exception as e:
         logger.error(f"Error in refresh_streamers: {e}")
-        return {"message": "Refresh failed, using fallback data", "count": len(scraping_service.fallback_streamers)}
+        return {
+            "message": "Refresh failed, using fallback data", 
+            "count": len(scraping_service.fallback_streamers),
+            "error": str(e)
+        }
+
+@app.get("/cache/status")
+async def get_cache_status():
+    """Get current cache status"""
+    return scraping_service.get_cache_status()
+
+@app.post("/streamers/test-scrape")
+async def test_scrape():
+    """Test scraping without cache - for debugging"""
+    try:
+        logger.info("Testing direct scrape (bypassing cache)")
+        streamers = await scraping_service.scrape_streamers()
+        is_fallback = streamers == scraping_service.fallback_streamers
+        
+        return {
+            "success": True,
+            "count": len(streamers),
+            "is_fallback_data": is_fallback,
+            "streamers": streamers[:3] if streamers else [],  # Return first 3 for preview
+            "message": "Fallback data returned - scraping failed" if is_fallback else "Real scraped data"
+        }
+    except Exception as e:
+        logger.error(f"Error in test_scrape: {e}")
+        return {
+            "success": False,
+            "error": str(e),
+            "message": "Test scraping failed"
+        }
 
 @app.get("/health")
 async def health_check():
