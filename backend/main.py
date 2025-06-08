@@ -8,8 +8,11 @@ from pydantic import BaseModel
 import logging
 import time
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
+# Configure logging to be less verbose
+logging.basicConfig(
+    level=logging.WARNING,  # Change from INFO to WARNING
+    format='%(levelname)s: %(message)s'  # Simplified format
+)
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Strip Token Live Streamers API", version="1.0.0")
@@ -35,7 +38,7 @@ class ScrapingService:
         self.base_url = "https://stripchat.com/girls/more"
         self.cached_streamers = []
         self.last_scrape_time = 0
-        self.cache_duration = 300  # 5 minutes cache
+        self.cache_duration = 900  # 15 minutes cache
         self.fallback_streamers = [
             {
                 "id": 1,
@@ -46,23 +49,23 @@ class ScrapingService:
             },
             {
                 "id": 2,
-                "name": "HotModel2",
+                "name": "lolableux",
                 "viewers": random.randint(100, 600),
-                "profileImage": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face",
+                "profileImage": "backend/fallback/198865260.webp",
                 "isLive": True
             },
             {
                 "id": 3,
-                "name": "BeautifulCam3",
+                "name": "layladream018",
                 "viewers": random.randint(100, 600),
-                "profileImage": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&h=150&fit=crop&crop=face",
+                "profileImage": "backend/fallback/204656359.webp",
                 "isLive": True
             },
             {
                 "id": 4,
-                "name": "GorgeousLive4",
+                "name": "aliasyourfav",
                 "viewers": random.randint(100, 600),
-                "profileImage": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop&crop=face",
+                "profileImage": "backend/fallback/204124771.webp",
                 "isLive": True
             },
             {
@@ -99,9 +102,9 @@ class ScrapingService:
         """Scrape live streamers from Stripchat using Playwright"""
         browser = None
         try:
-            logger.info("Starting Playwright browser...")
+            logger.warning("Starting Playwright browser...")
             async with async_playwright() as p:
-                # Launch browser with more options
+                # Launch browser with memory-optimized settings
                 browser = await p.chromium.launch(
                     headless=True,
                     args=[
@@ -111,29 +114,46 @@ class ScrapingService:
                         '--disable-accelerated-2d-canvas',
                         '--no-first-run',
                         '--no-zygote',
-                        '--disable-gpu'
+                        '--disable-gpu',
+                        '--disable-extensions',
+                        '--disable-default-apps',
+                        '--disable-sync',
+                        '--disable-translate',
+                        '--hide-scrollbars',
+                        '--metrics-recording-only',
+                        '--mute-audio',
+                        '--no-default-browser-check',
+                        '--safebrowsing-disable-auto-update',
+                        '--js-flags="--max-old-space-size=256"'
                     ]
                 )
                 
                 context = await browser.new_context(
                     user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-                    viewport={'width': 1920, 'height': 1080},
-                    ignore_https_errors=True
+                    viewport={'width': 1280, 'height': 720},  # Reduced viewport size
+                    ignore_https_errors=True,
+                    java_script_enabled=True,
+                    bypass_csp=True
                 )
+                
+                # Set memory limits for the context
+                await context.set_extra_http_headers({
+                    'Accept-Language': 'en-US,en;q=0.9',
+                })
                 
                 page = await context.new_page()
                 
-                # Set longer timeout
-                page.set_default_timeout(60000)  # 60 seconds
+                # Set shorter timeout
+                page.set_default_timeout(30000)  # Reduced from 60s to 30s
                 
-                logger.info(f"Navigating to {self.base_url}")
+                logger.warning(f"Navigating to {self.base_url}")
                 
                 # Try to navigate with retries
-                max_retries = 3
+                max_retries = 2  # Reduced from 3 to 2
                 for attempt in range(max_retries):
                     try:
-                        await page.goto(self.base_url, wait_until="domcontentloaded", timeout=45000)
-                        logger.info(f"Successfully navigated to page (attempt {attempt + 1})")
+                        await page.goto(self.base_url, wait_until="domcontentloaded", timeout=30000)
+                        logger.warning(f"Successfully navigated to page (attempt {attempt + 1})")
                         break
                     except Exception as e:
                         logger.warning(f"Navigation attempt {attempt + 1} failed: {e}")
@@ -199,7 +219,7 @@ class ScrapingService:
                         return self.fallback_streamers
                     
                     # Randomly select 8 cards from available cards
-                    selected_cards = random.sample(model_cards, min(8, len(model_cards)))
+                    selected_cards = random.sample(model_cards, min(9, len(model_cards)))
                     logger.info(f"Selected {len(selected_cards)} random cards")
                     
                     # Extract data from selected cards
@@ -407,4 +427,10 @@ async def health_check():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000) 
+    uvicorn.run(
+        app, 
+        host="0.0.0.0", 
+        port=8000,
+        log_level="warning",  # Set uvicorn logging to warning
+        access_log=False
+    ) 
