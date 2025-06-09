@@ -10,7 +10,7 @@ const Footer = () => {
   const [copied, setCopied] = useState(false);
   
   // Same contract address from StripRevolution component
-  const contractAddress = "7xKXtg2CW9GwqHyrM5QGDfxMzEuiRAhvdfF2o6PiGVMR";
+  const contractAddress = "EgZu2JHsapJ4fwRoM96eKwYjALxNBFw5i7TWhangtigJ";
 
   const copyToClipboard = async () => {
     try {
@@ -68,10 +68,7 @@ const Footer = () => {
                 {/* X (Community) */}
                 <button 
                   className="flex items-center text-gray-400 hover:text-strip-pink transition-colors duration-300 group w-full text-left"
-                  onClick={() => {
-                    // Add your navigation logic here when ready
-                    console.log('Navigate to community');
-                  }}
+                  onClick={() => window.open('https://x.com/i/communities/1931739066606707036', '_blank')}
                 >
                   <span className="mr-2">𝕏</span>
                   <span>Community</span>
@@ -81,10 +78,7 @@ const Footer = () => {
                 {/* Buy $STRIP */}
                 <button 
                   className="flex items-center text-gray-400 hover:text-strip-purple transition-colors duration-300 group w-full text-left"
-                  onClick={() => {
-                    // Add your navigation logic here when ready
-                    console.log('Navigate to buy');
-                  }}
+                  onClick={() => window.open('https://raydium.io/swap/?inputMint=sol&outputMint=EgZu2JHsapJ4fwRoM96eKwYjALxNBFw5i7TWhangtigJ', '_blank')}
                 >
                   <span className="mr-2">💰</span>
                   <span>Buy $STRIP</span>
@@ -158,10 +152,16 @@ const Footer = () => {
 
             {/* CTA Buttons */}
             <div className="flex space-x-4">
-              <button className="bg-gradient-to-r from-strip-pink to-strip-purple text-white px-6 py-2 rounded-lg font-semibold hover:from-strip-purple hover:to-strip-pink transition-all duration-300 transform hover:scale-105">
+              <button 
+                className="bg-gradient-to-r from-strip-pink to-strip-purple text-white px-6 py-2 rounded-lg font-semibold hover:from-strip-purple hover:to-strip-pink transition-all duration-300 transform hover:scale-105"
+                onClick={() => window.open('https://raydium.io/swap/?inputMint=sol&outputMint=EgZu2JHsapJ4fwRoM96eKwYjALxNBFw5i7TWhangtigJ', '_blank')}
+              >
                 Buy Now
               </button>
-              <button className="border border-gray-600 text-gray-400 hover:text-white hover:border-strip-pink px-6 py-2 rounded-lg font-semibold transition-all duration-300">
+              <button 
+                className="border border-gray-600 text-gray-400 hover:text-white hover:border-strip-pink px-6 py-2 rounded-lg font-semibold transition-all duration-300"
+                onClick={() => window.open('https://x.com/i/communities/1931739066606707036', '_blank')}
+              >
                 Join Community
               </button>
             </div>
