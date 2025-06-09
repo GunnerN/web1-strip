@@ -13,7 +13,7 @@ const StripRevolution = () => {
   const [copied, setCopied] = useState(false);
   
   // Generated Solana contract address (placeholder)
-  const contractAddress = "7xKXtg2CW9GwqHyrM5QGDfxMzEuiRAhvdfF2o6PiGVMR";
+  const contractAddress = "EgZu2JHsapJ4fwRoM96eKwYjALxNBFw5i7TWhangtigJ";
 
   const copyToClipboard = async () => {
     try {
@@ -97,15 +97,18 @@ const StripRevolution = () => {
           >
             <h3 className="text-2xl font-bold text-white mb-6">Trade $STRIP</h3>
             <div className="space-y-4">
-              <button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-4 px-6 rounded-xl font-semibold hover:from-purple-700 hover:to-blue-700 transition-all duration-300 flex items-center justify-center group">
+              <button className="w-full bg-gradient-to-r from-purple-600 to-blue-600 text-white py-4 px-6 rounded-xl font-semibold hover:from-purple-700 hover:to-blue-700 transition-all duration-300 flex items-center justify-center group"
+                onClick={() => window.open('https://jup.ag/swap/SOL-EgZu2JHsapJ4fwRoM96eKwYjALxNBFw5i7TWhangtigJ', '_blank')}>
                 <span className="mr-2">Trade on Jupiter</span>
                 <ArrowTopRightOnSquareIcon className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </button>
-              <button className="w-full bg-gradient-to-r from-green-600 to-teal-600 text-white py-4 px-6 rounded-xl font-semibold hover:from-green-700 hover:to-teal-700 transition-all duration-300 flex items-center justify-center group">
+              <button className="w-full bg-gradient-to-r from-green-600 to-teal-600 text-white py-4 px-6 rounded-xl font-semibold hover:from-green-700 hover:to-teal-700 transition-all duration-300 flex items-center justify-center group"
+                onClick={() => window.open('https://raydium.io/swap/?inputMint=sol&outputMint=EgZu2JHsapJ4fwRoM96eKwYjALxNBFw5i7TWhangtigJ', '_blank')}>
                 <span className="mr-2">Trade on Raydium</span>
                 <ArrowTopRightOnSquareIcon className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </button>
-              <button className="w-full bg-gradient-to-r from-orange-600 to-red-600 text-white py-4 px-6 rounded-xl font-semibold hover:from-orange-700 hover:to-red-700 transition-all duration-300 flex items-center justify-center group">
+              <button className="w-full bg-gradient-to-r from-orange-600 to-red-600 text-white py-4 px-6 rounded-xl font-semibold hover:from-orange-700 hover:to-red-700 transition-all duration-300 flex items-center justify-center group"
+                onClick={() => window.open('https://www.orca.so/?tokenIn=So11111111111111111111111111111111111111112&tokenOut=EgZu2JHsapJ4fwRoM96eKwYjALxNBFw5i7TWhangtigJ', '_blank')}>
                 <span className="mr-2">Trade on Orca</span>
                 <ArrowTopRightOnSquareIcon className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </button>
@@ -131,7 +134,8 @@ const StripRevolution = () => {
               <span className="text-strip-pink font-semibold"> 18+ content</span> awaits those bold enough to join.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-gradient-to-r from-strip-pink to-strip-purple text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-strip-purple hover:to-strip-pink transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+              <button className="bg-gradient-to-r from-strip-pink to-strip-purple text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-strip-purple hover:to-strip-pink transition-all duration-300 transform hover:scale-105 flex items-center justify-center"
+                onClick={() => window.open('https://x.com/i/communities/1931739066606707036', '_blank')}>
                 <UserGroupIcon className="w-6 h-6 mr-2" />
                 Join Community
               </button>
@@ -151,7 +155,8 @@ const StripRevolution = () => {
           <p className="text-xl text-gray-300 mb-6">
             Join investors who aren't afraid to embrace the future of adult entertainment & finance
           </p>
-          <button className="bg-gradient-to-r from-strip-pink to-strip-purple text-white px-12 py-4 rounded-xl font-bold text-xl hover:from-strip-purple hover:to-strip-pink transition-all duration-300 transform hover:scale-105">
+          <button className="bg-gradient-to-r from-strip-pink to-strip-purple text-white px-12 py-4 rounded-xl font-bold text-xl hover:from-strip-purple hover:to-strip-pink transition-all duration-300 transform hover:scale-105"
+            onClick={() => window.open('https://raydium.io/swap/?inputMint=sol&outputMint=EgZu2JHsapJ4fwRoM96eKwYjALxNBFw5i7TWhangtigJ', '_blank')}>
             Buy $STRIP Now
           </button>
         </motion.div>
