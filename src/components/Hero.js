@@ -46,10 +46,16 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.6 }}
           >
-            <button className="px-8 py-4 bg-gradient-to-r from-strip-red to-red-600 rounded-lg font-bold text-white hover:from-red-600 hover:to-strip-red transition-all duration-300 transform hover:scale-105">
+            <button 
+              className="px-8 py-4 bg-gradient-to-r from-strip-red to-red-600 rounded-lg font-bold text-white hover:from-red-600 hover:to-strip-red transition-all duration-300 transform hover:scale-105"
+              onClick={() => window.open('https://raydium.io/swap/?inputMint=sol&outputMint=EgZu2JHsapJ4fwRoM96eKwYjALxNBFw5i7TWhangtigJ', '_blank')}
+            >
               Get $Strip Now
             </button>
-            <button className="px-8 py-4 border-2 border-strip-gold rounded-lg font-bold text-strip-gold hover:bg-strip-gold hover:text-white transition-all duration-300 transform hover:scale-105">
+            <button 
+              className="px-8 py-4 border-2 border-strip-gold rounded-lg font-bold text-strip-gold hover:bg-strip-gold hover:text-white transition-all duration-300 transform hover:scale-105"
+              onClick={() => window.open('https://x.com/i/communities/1931739066606707036', '_blank')}
+            >
               Join Community
             </button>
           </motion.div>
