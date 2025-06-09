@@ -152,7 +152,7 @@ const StripRevolution = () => {
             Join investors who aren't afraid to embrace the future of adult entertainment & finance
           </p>
           <button className="bg-gradient-to-r from-strip-pink to-strip-purple text-white px-12 py-4 rounded-xl font-bold text-xl hover:from-strip-purple hover:to-strip-pink transition-all duration-300 transform hover:scale-105">
-            Buy $STRIP Nowx
+            Buy $STRIP Now
           </button>
         </motion.div>
 
